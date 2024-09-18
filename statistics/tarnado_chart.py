@@ -29,16 +29,17 @@ if __name__ == "__main__":
     ax1.xaxis.set_major_formatter(formatter)
     ax1.set_xlabel(None)
     # palettes = ["viridis", "cividis", "inferno", "magma", "plasma", "Blues", "Greens", "Reds", "Oranges", "Purples", "Browns", "Greys"]
+    # palettes = ["deep", "muted", "bright", "pastel", "dark", "colorblind", "husl", "xkcd"]
     palette = sns.color_palette("Blues_r", 5)
     
     x = np.flip(data['Seq'].unique())
-    points0 = np.flip(data[data['lr'] == 0].groupby('Seq')['Points'].mean() / data['Points'].max())
-    points1 =  np.flip(data[data['lr'] == 1e-3].groupby('Seq')['Points'].mean() / data['Points'].max())
-    points2 = np.flip(data[data['lr'] == 1e-2].groupby('Seq')['Points'].mean() / data['Points'].max())
-    psnr0 = np.flip((data[data['lr'] == 0].groupby('Seq')['PSNR'].mean() - data['PSNR'].min()) / (data['PSNR'].max() - data['PSNR'].min()))
-    psnr1 = np.flip((data[data['lr'] == 1e-3].groupby('Seq')['PSNR'].mean() - data['PSNR'].min()) / (data['PSNR'].max() - data['PSNR'].min()))
-    psnr2 = np.flip((data[data['lr'] == 1e-2].groupby('Seq')['PSNR'].mean() - data['PSNR'].min()) / (data['PSNR'].max() - data['PSNR'].min()))
-    ax1.barh(x, points0, height=0.5, color=palette[2], label='0e+0', edgecolor='none', zorder=3)
+    points0 = np.flip(data[data['lr'] == 0].groupby('Seq')['Points'].mean() / 150000)
+    points1 =  np.flip(data[data['lr'] == 1e-3].groupby('Seq')['Points'].mean() / 150000)
+    points2 = np.flip(data[data['lr'] == 1e-2].groupby('Seq')['Points'].mean() / 150000)
+    psnr0 = np.flip((data[data['lr'] == 0].groupby('Seq')['PSNR'].mean()) / 40 )
+    psnr1 = np.flip((data[data['lr'] == 1e-3].groupby('Seq')['PSNR'].mean()) / 40)
+    psnr2 = np.flip((data[data['lr'] == 1e-2].groupby('Seq')['PSNR'].mean()) / 40)
+    ax1.barh(x, points0, height=0.5, color=palette[2], label='w/o', edgecolor='none', zorder=3)
     ax1.barh(x, points1, height=0.5, color=palette[1], label='1e-3', edgecolor='none', zorder=3)
     ax1.barh(x, points2, height=0.5, color=palette[0], label='1e-2', edgecolor='none', zorder=3)
     ax1.barh(x, -psnr0, height=0.5, color=palette[2], edgecolor='none', zorder=3)
@@ -46,12 +47,12 @@ if __name__ == "__main__":
     ax1.barh(x, -psnr2, height=0.5, color=palette[0], edgecolor='none', zorder=3)
     ax1.axvline(0, color='k', linestyle='--', linewidth=0.9, zorder=4)
     ticks = np.arange(-4, 5) / 4
-    psnrs = -np.arange(-4, 0) / 4 * (data['PSNR'].max() - data['PSNR'].min()) + data['PSNR'].min()
-    points = np.arange(0, 5) / 4 * data['Points'].max() // 1000 * 1000
-    labels = [(int(x) if x < 100 else f"{int(x // 1000)}k")for x in np.concatenate([psnrs, points])]
+    psnrs = -np.arange(-4, 0) / 4 * 40
+    points = np.arange(0, 5) / 4 * 150000
+    labels = [(int(x) if x < 100 else f"{x / 1000}k")for x in np.concatenate([psnrs, points])]
     plt.xticks(ticks=ticks, labels=labels)
-    plt.text(0.01, 0.01, 'PSNR', va='bottom', ha='left', transform=plt.gca().transAxes)
-    plt.text(0.99, 0.01, 'Points', va='bottom', ha='right', transform=plt.gca().transAxes)
+    plt.text(0.01, 0.00, 'PSNR', va='bottom', ha='left', transform=plt.gca().transAxes)
+    plt.text(0.99, 0.00, 'Points', va='bottom', ha='right', transform=plt.gca().transAxes)
 
     ax1.legend()
     ax1.grid(False, axis='y')
