@@ -25,8 +25,10 @@ if __name__ == "__main__":
 
     data = pd.read_excel(args.input)
 
-    palette1 = sns.color_palette("dark", 2)
-    palette2 = sns.color_palette("bright", 2)
+    palette1 = sns.color_palette("dark", 4)
+    palette2 = sns.color_palette("bright", 4)
+    iter_color = palette1[0]
+    psnr_color = palette2[3] 
 
     fig, ax1 = plt.subplots(figsize=(6, 4))
     ax1.set_xlabel('Keyframe', fontsize=11)
@@ -36,31 +38,31 @@ if __name__ == "__main__":
     z1 = data[data['type'] == 'w/o']['PSNR'] / 40
     y2 = data[data['type'] == 'w/']['Iter'] / 300
     z2 = data[data['type'] == 'w/']['PSNR'] / 40
-    ax1.set_ylabel('Iteration', color=palette1[0], fontsize=11)
-    ax1.plot(x, y1, '--', color=palette1[0], label='w/o', linewidth=linewidth, zorder=3)
-    ax1.plot(x, y2, color=palette1[0], label='w/', linewidth=linewidth, zorder=3)
-    ax1.axhline(np.mean(y1), color=palette1[0], linestyle='--', linewidth=0.8, zorder=2, alpha=0.7)
-    ax1.axhline(np.mean(y2), color=palette1[0], linewidth=0.8, zorder=2, alpha=0.7)
+    ax1.set_ylabel('Iteration', color=iter_color, fontsize=11)
+    ax1.plot(x, y1, '--', color=iter_color, label='w/o', linewidth=linewidth, zorder=3)
+    ax1.plot(x, y2, color=iter_color, label='w/', linewidth=linewidth, zorder=3)
+    ax1.axhline(np.mean(y1), color=iter_color, linestyle='--', linewidth=0.8, zorder=2, alpha=0.7)
+    ax1.axhline(np.mean(y2), color=iter_color, linewidth=0.8, zorder=2, alpha=0.7)
 
     ticks = np.arange(0, 6) / 5
     labels = (ticks * 300).round(0).astype(np.int32)
     ax1.set_yticks(ticks=ticks, labels=labels)
-    ax1.tick_params(axis='y', labelcolor=palette1[0])
+    ax1.tick_params(axis='y', labelcolor=iter_color)
 
-    ax1.axhline(np.mean(z1), color=palette2[1], linestyle='--', linewidth=0.8, zorder=2, alpha=0.7)
-    ax1.axhline(np.mean(z2), color=palette2[1], linewidth=0.8, zorder=2, alpha=0.7)
+    ax1.axhline(np.mean(z1), color=psnr_color, linestyle='--', linewidth=0.8, zorder=2, alpha=0.7)
+    ax1.axhline(np.mean(z2), color=psnr_color, linewidth=0.8, zorder=2, alpha=0.7)
 
     ax2 = ax1.twinx()
-    ax2.set_ylabel('PSNR', color=palette2[1], fontsize=11)
+    ax2.set_ylabel('PSNR', color=psnr_color, fontsize=11)
 
-    ax2.plot(x, z1, '--', color=palette2[1], label='w/o', linewidth=linewidth, zorder=3)
-    ax2.plot(x, z2, color=palette2[1], label='w/', linewidth=linewidth, zorder=3)
+    ax2.plot(x, z1, '--', color=psnr_color, label='w/o', linewidth=linewidth, zorder=3)
+    ax2.plot(x, z2, color=psnr_color, label='w/', linewidth=linewidth, zorder=3)
 
     labels = (ticks * 40).astype(np.int32)
     ticks = np.append(ticks, [np.mean(z1), np.mean(z2)])
     labels = np.append(labels, [np.mean(z1) *  40, np.mean(z2) *  40]).round(1)
     ax2.set_yticks(ticks=ticks, labels=labels)
-    ax2.tick_params(axis='y', labelcolor=palette2[1])
+    ax2.tick_params(axis='y', labelcolor=psnr_color)
 
     max_ylim = max(ax1.get_ylim()[1], ax2.get_ylim()[1])
     min_ylim = min(ax1.get_ylim()[0], ax2.get_ylim()[0])
