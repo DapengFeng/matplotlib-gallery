@@ -14,6 +14,11 @@ if platform.system() == 'Windows':
 else:
     print("Please use Windows to draw again.")
 
+import matplotlib
+
+matplotlib.rcParams['pdf.fonttype'] = 42
+matplotlib.rcParams['ps.fonttype'] = 42
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Tornado Chart')

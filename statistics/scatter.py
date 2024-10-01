@@ -4,10 +4,14 @@ import seaborn as sns
 import argparse
 import numpy as np
 from adjustText import adjust_text
+import matplotlib
 
 import platform
 
 # sns.set_style("darkgrid")
+
+matplotlib.rcParams['pdf.fonttype'] = 42
+matplotlib.rcParams['ps.fonttype'] = 42
 
 if platform.system() == 'Windows':
     plt.rcParams['font.family'] = 'Times New Roman'
