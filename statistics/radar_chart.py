@@ -56,7 +56,7 @@ if __name__ == "__main__":
         ax1.annotate(f"{value[0] * 10 + 28:.1f}", (angles[0], value[0]), textcoords="offset pixels", xytext=(x_offset[idx], sign[idx] * 6), fontsize=fontsize+1, color=palette[idx], zorder=40, fontweight='bold')
     
 
-    plt.legend(loc='lower center', bbox_to_anchor=(0.5, -0.2), ncols=len(y)-1, frameon=False, facecolor='none')
+    plt.legend(bbox_to_anchor=(1.0, 1.1), ncols=1, frameon=False, facecolor='none')
 
     plt.savefig(args.output, pad_inches=0, bbox_inches='tight')
 
